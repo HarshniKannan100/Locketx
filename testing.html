@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>LocketX Test</h2>
+
+<!-- User Info -->
+<label>User ID:</label>
+<input type="number" id="userId" />
+<button onclick="connect()">Connect</button>
+
+<br><br>
+
+<label>Receiver IDs:</label>
+<input type="text" id="receiverIds" placeholder="e.g. 2,3,4">
+
+
+<br><br>
+
+<!-- Upload -->
+<video id="video" width="300" autoplay></video>
+<br>
+<button onclick="startCamera()">Start Camera</button>
+<button onclick="capturePhoto()">Capture & Send</button>
+
+<h3>Messages:</h3>
+<div id="chat"></div>
+
+<script>
+let socket;
+// 🔌 CONNECT
+function connect() {
+    const userId = document.getElementById("userId").value;
+
+    socket = new WebSocket(`ws://localhost:8080/chat?userId=${userId}`);
+
+    socket.onopen = () => {
+        console.log("Connected");
+    };
+
+    socket.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        const chat = document.getElementById("chat");
+
+        if (msg.type === "TEXT") {
+            chat.innerHTML += `<p><b>${msg.senderId}:</b> ${msg.content}</p>`;
+        } else if (msg.type === "IMAGE") {
+            chat.innerHTML += `<p><b>${msg.senderId}:</b><br>
+                <img src="${msg.content}" width="200"/>
+            </p>`;
+        }
+    };
+}
+
+let videoStream;
+
+function startCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            videoStream = stream;
+            document.getElementById("video").srcObject = stream;
+        })
+        .catch(err => {
+            console.error("Camera error:", err);
+            alert("Camera access denied");
+        });
+}
+
+function capturePhoto() {
+    const video = document.getElementById("video");
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0);
+
+    canvas.toBlob((blob) => {
+        sendImage(blob);
+    }, "image/jpeg");
+}
+
+function sendImage(blob) {
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+        alert("Connect first!");
+        return;
+    }
+
+    const senderId = document.getElementById("userId").value;
+    const receiverInput = document.getElementById("receiverIds").value;
+
+    if (!receiverInput) {
+        alert("Enter receiver IDs");
+        return;
+    }
+
+    const receiverIds = receiverInput
+        .split(",")
+        .map(id => parseInt(id.trim()))
+        .filter(id => !isNaN(id));
+
+    const formData = new FormData();
+    formData.append("file", blob, "photo.jpg");
+
+    fetch("http://localhost:8080/api/images/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(url => {
+        const message = {
+            type: "IMAGE",
+            senderId: parseInt(senderId),
+            receiverIds: receiverIds,
+            content: url
+        };
+
+        socket.send(JSON.stringify(message));
+    });
+}
+
+
+
+</script>
+
+</body>
+</html>
