@@ -1,0 +1,108 @@
+.home-container {
+  max-width: 100%;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  padding: 10px;
+  background-color: #d9d954;
+  color: #EF018C;
+}
+
+.login-container,.register-container {
+  max-width: 400px;
+  margin: auto;
+  margin-top: 10%;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #d9d954;
+  color: #EF018C;
+  border-radius: 10px;
+}
+.header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #EF018C;
+}
+
+input {
+  width: 80%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #EF018C;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #EF018C;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.user-list {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.user-card {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #EF018C;
+  cursor: pointer;
+}
+
+.user-card.active {
+  background-color: #EF018C;
+  color: white;
+}
+
+.video {
+  width: 50%;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.capture-btn {
+  margin-top: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #EF018C;
+  color: white;
+  font-size: 20px;
+  border: none;
+  margin-left: 10px;
+}
+
+.feed {
+  margin-top: 20px;
+}
+
+.feed-card {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.feed-img {
+  width: 50%;
+  border-radius: 15px;
+  margin-right: 40%;
+}
+
+.my-img {
+  width: 50%;
+  border-radius: 15px;
+  margin-left: 40%;
+}
+
+.camera-controls {
+  gap: 10px;
+  
+}
