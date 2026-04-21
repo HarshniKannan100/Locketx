@@ -17,8 +17,8 @@ public class SecurityConfig {
                 .cors(cors -> {}) // enable CORS
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // ✅ allow login/register
-                        .requestMatchers("/api/images/**").permitAll() // (temporarily allow upload)
+                        .requestMatchers("/api/auth/**").permitAll()  
+                        .requestMatchers("/api/images/**").permitAll() 
                         .requestMatchers("/chat/**").permitAll() // websocket
                         .anyRequest().authenticated()
                 );
