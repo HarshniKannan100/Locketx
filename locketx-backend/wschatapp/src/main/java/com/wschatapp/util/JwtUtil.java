@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class JwtUtil {
 
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkey123"; // 🔥 keep fixed
+    private static final String SECRET = ***;
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public static String generateToken(Long userId) {
